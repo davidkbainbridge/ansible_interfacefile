@@ -36,3 +36,10 @@ every possible option. Specific attributes of interest are:
 When specifying the **address** attributes, you can either specify them individually,
 i.e., `address`, `network`, and `netmask` or you can specify `address` in netmask
 location with the IP address and the network bits, i.e. `192.168.42.31/24`.
+
+# Sample Playbook
+Included in the repository is a sample playbook, `playbook.yml`. This can be used to test and
+examine the results of the module. To run the playbook you can run the command:
+```
+ansible-playbook -M . -i 127.0.0.1, playbook.yml -v
+```
