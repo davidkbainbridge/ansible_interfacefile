@@ -1,0 +1,59 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Ensure Fabric
+    netfile:
+      src: ./sample.in
+      dest: sample.modified
+      state: present
+      name: fabric
+      config: static
+      address: 10.2.1.1/24
+      bond-mode: active-backup
+      bond-miimon: 100
+      bond-slaves: none
+
+  - name: Ensure Eth0
+    netfile:
+      src: sample.modified
+      dest: sample.modified
+      state: present
+      name: eth0
+      config: manual
+      bond-master: fabric
+      auto: true
+
+  - name: Ensure Eth1
+    netfile:
+      src: sample.modified
+      dest: sample.modified
+      state: present
+      name: eth1
+      config: manual
+      bond-master: fabric
+      bond-primary: eth0
+      auto: true
+
+  - name: Ensure Eht0 (Again)
+    netfile:
+      src: sample.modified
+      dest: sample.modified
+      state: present
+      name: eth0
+      config: manual
+      bond-master: fabric
+      auto: true
+
+  - name: Query Fabric
+    netfile:
+      src: sample.modified
+      state: query
+      name: fabric
+
+  - name: Query Unknown
+    netfile:
+      src: sample.modified
+      state: query
+      name: unknown
+
