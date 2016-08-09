@@ -101,6 +101,7 @@ src_file = "/etc/network/interfaces"
 dest_file = ""
 state = "present"
 name = ""
+force = False
 values = {
 	"config": "manual",
 	"type": "inet"
@@ -125,6 +126,8 @@ for arg in arguments:
 		name = value
 	elif key == "state":
 		state = value
+	elif key == "force":
+		force = value.lower() in ['true', 't', 'yes', 'y']
 	elif key[0] != '_':
 		values[key] = value
 
@@ -172,7 +175,7 @@ elif state == "absent" and name in ifaces.keys():
 	del ifaces[name]
 	result["changed"] = True
 
-if result["changed"]:
+if force or result["changed"]:
 	file = open(dest_file, "w+")
 	write(file, ifaces)
 	file.close()
